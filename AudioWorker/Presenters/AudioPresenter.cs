@@ -1,45 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AudioWorker.Exceptions;
+using AudioWorker.Interfaces;
+using AudioWorker.Models;
 using NAudio.Wave;
 
 namespace AudioWorker.Presenters
 {
-    public class AudioData
-    {
-        public String FileName { get; private set; }
-        public TimeSpan? CurrentTime { get; private set; }
-        public TimeSpan? TotalTime { get; private set; }
-        public Single? Volume { get; private set; }
-
-        internal AudioData() { }
-
-        internal void Init(AudioFileReader audioFileReader)
-        {
-            if(audioFileReader == null)
-            {
-                throw new AudioFileReaderNotInitializedException();
-            }
-            this.FileName = audioFileReader.FileName;
-            this.CurrentTime = audioFileReader.CurrentTime;
-            this.TotalTime = audioFileReader.TotalTime;
-            this.Volume = audioFileReader.Volume;
-        }
-    }
-
-    internal class AudioPresenter : IAudioPresenter
+    internal class AudioPresenter : Interfaces.IAudioPresenter
     {
         private readonly WaveOutEvent _waveOutEvent;
         private AudioFileReader _fileReader;
 
-        public AudioData AudioData { get; }
-
-        public TimeSpan? GetCurrentPosition => AudioData?.CurrentTime;
-        public TimeSpan? GetDuration => AudioData?.TotalTime;
-        public String FileName => AudioData?.FileName;
-        public Single? Volume => AudioData?.Volume;
-
-        public int GetAudioData => 0;
+        public AudioData AudioData { get; private set; }
 
         public AudioPresenter()
         {
@@ -50,6 +22,14 @@ namespace AudioWorker.Presenters
         {
             _fileReader = new AudioFileReader(path);
             _waveOutEvent.Init(_fileReader);
+
+            InitializeAudioData();
+        }
+
+        private void InitializeAudioData()
+        {
+            AudioData = new AudioData();
+            AudioData.Init(_fileReader);
         }
 
         /// <summary>

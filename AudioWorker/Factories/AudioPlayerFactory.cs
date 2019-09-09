@@ -1,4 +1,5 @@
-﻿using AudioWorker.Presenters;
+﻿using AudioWorker.Interfaces;
+using AudioWorker.Presenters;
 
 namespace AudioWorker.Factories
 {
