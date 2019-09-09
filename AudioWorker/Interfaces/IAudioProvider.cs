@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AudioWorker.Models;
-using AudioWorker.Presenters;
 
 namespace AudioWorker.Interfaces
 {
-    public interface IAudioPresenter : IPlayer, IAsyncPlayer
+    public interface IAudioProvider : IPlayer, IAsyncPlayer
     {
         AudioData AudioData { get; }
 

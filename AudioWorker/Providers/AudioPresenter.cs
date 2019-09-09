@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AudioWorker.Interfaces;
 using AudioWorker.Models;
 using NAudio.Wave;
 
-namespace AudioWorker.Presenters
+namespace AudioWorker.Providers
 {
-    internal class AudioPresenter : Interfaces.IAudioPresenter
+    internal class AudioProvider : Interfaces.IAudioProvider
     {
         private readonly WaveOutEvent _waveOutEvent;
         private AudioFileReader _fileReader;
 
         public AudioData AudioData { get; private set; }
 
-        public AudioPresenter()
+        public AudioProvider()
         {
             _waveOutEvent = new WaveOutEvent();
         }
