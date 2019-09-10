@@ -15,6 +15,7 @@ namespace AudioPlayer
         public event EventHandler Initialize;
         public event EventHandler LoadFiles;
         public event EventHandler<PathHolderEventArgs> ChangeAudio;
+        public event EventHandler<VolumeChangingEventArgs> VolumeChanging;
 
         private readonly PlayerPresenter _presenter;
 
@@ -54,6 +55,14 @@ namespace AudioPlayer
             ChangeAudio?.Invoke(sender, new PathHolderEventArgs
             {
                 PathHolder = FilesListView.SelectedItem as PathHolder
+            });
+        }
+
+        private void RangeBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            VolumeChanging?.Invoke(sender, new VolumeChangingEventArgs
+            {
+                Volume = (Single)e.NewValue
             });
         }
     }

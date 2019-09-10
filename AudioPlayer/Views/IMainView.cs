@@ -10,6 +10,12 @@ namespace AudioPlayer.Views
     {
         event EventHandler LoadFiles;
         event EventHandler<PathHolderEventArgs> ChangeAudio;
+        event EventHandler<VolumeChangingEventArgs> VolumeChanging;
+    }
+
+    public class VolumeChangingEventArgs : EventArgs
+    {
+        public Single Volume { get; set; }
     }
 
     public class PathHolderEventArgs : EventArgs

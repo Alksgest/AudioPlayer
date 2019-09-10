@@ -31,6 +31,12 @@ namespace AudioPlayer.Presenters
             base.Initialize(sender, args);
             View.LoadFiles += OnLoadFiles;
             View.ChangeAudio += OnChangeAudio;
+            View.VolumeChanging += OnVolumeChanging;
+        }
+
+        private void OnVolumeChanging(object sender, VolumeChangingEventArgs e)
+        {
+            _provider.ChangeVolume(e.Volume);
         }
 
         private void OnChangeAudio(object sender, PathHolderEventArgs e)

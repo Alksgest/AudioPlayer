@@ -24,7 +24,8 @@
                     VerticalAlignment="Top" Width="19" 
                     Minimum="0" Maximum="1" Value="0.5"
                     Orientation="Vertical"
-                    TickPlacement="BottomRight" Height="354"/>
+                    TickPlacement="BottomRight" Height="354"
+                    ValueChanged="RangeBase_OnValueChanged"/>
             <Button x:Name="OpenFolderButton" Content="Open folder" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click"/>
         </Grid>
 
