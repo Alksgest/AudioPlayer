@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AudioWorker.Models;
 using NAudio.Wave;
+using PlaybackState = AudioWorker.Interfaces.PlaybackState;
 
 namespace AudioWorker.Providers
 {
@@ -11,6 +12,24 @@ namespace AudioWorker.Providers
         private AudioFileReader _fileReader;
 
         public AudioData AudioData { get; private set; }
+
+        public Interfaces.PlaybackState PlaybackState
+        {
+            get
+            {
+                switch (_waveOutEvent.PlaybackState)
+                {
+                    case NAudio.Wave.PlaybackState.Playing:
+                        return PlaybackState.Playing;
+                    case
+                        NAudio.Wave.PlaybackState.Paused:
+                        return PlaybackState.Paused;
+                    case NAudio.Wave.PlaybackState.Stopped:
+                        return PlaybackState.Stoped;
+                }
+                return default;
+            }
+        }
 
         public AudioProvider()
         {
@@ -24,6 +43,8 @@ namespace AudioWorker.Providers
 
             InitializeAudioData();
         }
+
+        
 
         private void InitializeAudioData()
         {

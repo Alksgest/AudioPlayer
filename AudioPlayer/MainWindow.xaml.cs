@@ -1,42 +1,60 @@
-﻿using AudioWorker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using AudioPlayer.Models;
+using AudioPlayer.Presenters;
+using AudioPlayer.Views;
+using AudioWorker.Factories;
+using AudioWorker.Interfaces;
 
 namespace AudioPlayer
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainView
     {
-        IAudioPlayer _player;
 
-        private const string _sampleAudio = @"C:\Personal Data\01 - Black Star.mp3";
+        public event EventHandler Initialize;
+        public event EventHandler LoadFiles;
+        public event EventHandler<PathHolderEventArgs> ChangeAudio;
+
+        private readonly PlayerPresenter _presenter;
+
         public MainWindow()
         {
+            _presenter = new PlayerPresenter(this);
             InitializeComponent();
 
-            _player = AudioPlayerFactory.GetAudioPlayer();
-            _player.InitAudio(_sampleAudio);
+            InvokeInitialization(new EventArgs());
         }
+
+        private void InvokeInitialization(EventArgs args) => this.Initialize?.Invoke(this, args);
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            _player.Play();
+            _presenter.Play();
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            _player.Stop();
+            _presenter.Stop();
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.Pause();
+        }
+
+        private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadFiles?.Invoke(sender, e);
+            this.FilesListView.ItemsSource = _presenter.Files;
+        }
+
+        private void FilesListView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ChangeAudio?.Invoke(sender, new PathHolderEventArgs
+            {
+                PathHolder = FilesListView.SelectedItem as PathHolder
+            });
         }
     }
 }
