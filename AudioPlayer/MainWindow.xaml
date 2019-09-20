@@ -11,22 +11,46 @@
             <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Left" Margin="2,369,0,0" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
             <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Margin="162,369,0,0" VerticalAlignment="Top" Width="75" Click="StopButton_Click"/>
             <Button x:Name="PauseButton" Content="Pause" HorizontalAlignment="Left" Margin="82,369,0,0" VerticalAlignment="Top" Width="75" Click="PauseButton_Click"/>
-            <ListView x:Name="FilesListView" HorizontalAlignment="Left" 
-                      Height="310" Margin="10,10,0,0" VerticalAlignment="Top" Width="203"
+            <!--<ListView Visibility="Collapsed" x:Name="FilesListView" HorizontalAlignment="Left" 
+                      Height="284" Margin="10,10,0,0" VerticalAlignment="Top" Width="203"
                       MouseDoubleClick="FilesListView_OnMouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn/>
                     </GridView>
                 </ListView.View>
-            </ListView>
+            </ListView>-->
             <Slider HorizontalAlignment="Left" Margin="218,10,0,0" 
                     VerticalAlignment="Top" Width="19" 
                     Minimum="0" Maximum="1" Value="0.5"
                     Orientation="Vertical"
                     TickPlacement="BottomRight" Height="354"
                     ValueChanged="RangeBase_OnValueChanged"/>
-            <Button x:Name="OpenFolderButton" Content="Open folder" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click"/>
+            <Button x:Name="OpenFolderButton" Content="Open files" HorizontalAlignment="Left" Margin="74,329,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click"/>
+            <Slider x:Name="DurationSlider" HorizontalAlignment="Left" 
+                    Margin="10,299,0,0" VerticalAlignment="Top" 
+                    Width="203" DataContext="{Binding Path=CurrentTime}"/>
+
+            <Label x:Name="CurrentTimeLabel" VerticalAlignment="Top" 
+                   HorizontalAlignment="Left" Margin="10,318,0,0"
+                   Content="{Binding Path=CurrentTime}" ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}" >
+            </Label>
+
+            <Label x:Name="FullTimeLabel" VerticalAlignment="Top"
+                   HorizontalAlignment="Left" Margin="162,318,0,0"
+                   Content="{Binding Path=TotalTime}" ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}">
+            </Label>
+
+            <DataGrid MouseDoubleClick="AudioDataGrid_MouseDoubleClick" ColumnWidth="*" 
+                      AutoGenerateColumns="False"  x:Name="AudioDataGrid" 
+                      HorizontalAlignment="Left" Height="284"
+                      Margin="10,10,0,0" VerticalAlignment="Top" 
+                      Width="203" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Path=FileName}"/>
+                    <DataGridTextColumn Width="*" Header="Total time" Binding="{Binding Path=TotalTime}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
     </Grid>

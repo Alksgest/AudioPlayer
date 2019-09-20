@@ -6,6 +6,7 @@ using AudioPlayer.Presenters;
 using AudioPlayer.Views;
 using AudioWorker.Factories;
 using AudioWorker.Interfaces;
+using AudioWorker.Models;
 
 namespace AudioPlayer
 {
@@ -47,22 +48,48 @@ namespace AudioPlayer
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {
             LoadFiles?.Invoke(sender, e);
-            this.FilesListView.ItemsSource = _presenter.Files;
+            //this.FilesListView.ItemsSource = _presenter.Files;
+            this.AudioDataGrid.ItemsSource = _presenter.AudioData;
         }
 
-        private void FilesListView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ChangeAudio?.Invoke(sender, new PathHolderEventArgs
-            {
-                PathHolder = FilesListView.SelectedItem as PathHolder
-            });
-        }
+        //private void FilesListView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    ChangeAudio?.Invoke(sender, new PathHolderEventArgs
+        //    {
+        //        PathHolder = FilesListView.SelectedItem as PathHolder
+        //    });
+        //}
 
         private void RangeBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             VolumeChanging?.Invoke(sender, new VolumeChangingEventArgs
             {
                 Volume = (Single)e.NewValue
+            });
+        }
+
+        private void AudioDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var data = AudioDataGrid.SelectedItem as AudioData;
+            ChangeAudioViaNewAudioData(sender, data);
+            SetTimeLabels();
+        }
+
+        private void SetTimeLabels()
+        {
+            CurrentTimeLabel.DataContext = _presenter.CurrentData;
+            FullTimeLabel.DataContext = _presenter.CurrentData;
+        }
+
+        private void ChangeAudioViaNewAudioData(object sender, AudioData data)
+        {
+            ChangeAudio?.Invoke(sender, new PathHolderEventArgs
+            {
+                PathHolder = new PathHolder
+                {
+                    FullPath = data.FilePath,
+                    Title = data.FileName
+                }
             });
         }
     }

@@ -8,8 +8,10 @@ namespace AudioPlayer.Models
 {
     public class PathHolder
     {
-        public string Title { get; }
-        public string FullPath { get; }
+        public string Title { get; set; }
+        public string FullPath { get; set; }
+
+        public PathHolder() { }
 
         public PathHolder(string title, string fullPath)
         {

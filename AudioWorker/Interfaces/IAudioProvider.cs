@@ -6,8 +6,8 @@ namespace AudioWorker.Interfaces
 {
     public enum PlaybackState
     {
-        Playing, 
-        Paused, 
+        Playing,
+        Paused,
         Stoped
     }
 
@@ -18,7 +18,9 @@ namespace AudioWorker.Interfaces
         void ChangeVolume(float value);
         void InitAudio(string path);
 
-       PlaybackState PlaybackState { get; }
-        
+        AudioData GetAudioData(string fullPath);
+
+        PlaybackState PlaybackState { get; }
+
     }
 }

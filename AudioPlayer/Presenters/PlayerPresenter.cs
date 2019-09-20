@@ -6,6 +6,7 @@ using AudioPlayer.Models;
 using AudioPlayer.Views;
 using AudioWorker.Factories;
 using AudioWorker.Interfaces;
+using AudioWorker.Models;
 
 namespace AudioPlayer.Presenters
 {
@@ -16,14 +17,28 @@ namespace AudioPlayer.Presenters
             "Audio Files (*.mp3; *.wav; *.wma; *.flac; *.ogg; *.m4a) " +
             "|*.mp3;*.wav;*.wma;*.flac;*.ogg;*.m4a";
 
-        private readonly IAudioProvider _provider;
+        private readonly IAudioProvider _provider = AudioProviderFactory.GetAudioPlayer();
 
-        public List<PathHolder> Files { get; private set; }
+        public List<PathHolder> Files { get; private set; } = new List<PathHolder>();
 
-        public PlayerPresenter(IMainView view) : base(view)
+        public AudioData CurrentData
         {
-            _provider = AudioProviderFactory.GetAudioPlayer();
+            get
+            {
+                return _provider.AudioData;
+            }
+        }
 
+        public List<AudioData> AudioData { get; private set; } = new List<AudioData>();
+
+        public PlayerPresenter(IMainView view) : base(view) { }
+
+        private void SetAudioData()
+        {
+            foreach(var file in Files)
+            {
+                AudioData.Add(_provider.GetAudioData(file.FullPath));
+            }
         }
 
         protected override void Initialize(object sender, EventArgs args)
@@ -34,24 +49,26 @@ namespace AudioPlayer.Presenters
             View.VolumeChanging += OnVolumeChanging;
         }
 
-        private void OnVolumeChanging(object sender, VolumeChangingEventArgs e)
-        {
-            _provider.ChangeVolume(e.Volume);
-        }
+        private void OnVolumeChanging(object sender, VolumeChangingEventArgs e) => _provider.ChangeVolume(e.Volume);
 
         private void OnChangeAudio(object sender, PathHolderEventArgs e)
         {
-            if (!Files.Contains(e.PathHolder))
-                return;
-
-            if (_provider.PlaybackState == PlaybackState.Playing)
-                Stop();
-
+            Stop();
+            
             _provider.InitAudio(e.PathHolder.FullPath);
+
             Play();
         }
 
         private void OnLoadFiles(object sender, EventArgs args)
+        {
+            var files = OpenFilesDialog();
+
+            Files = (List<PathHolder>)new PathHolderMapper().MapList(files);
+            SetAudioData();
+        }
+
+        private string[] OpenFilesDialog()
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
@@ -61,8 +78,7 @@ namespace AudioPlayer.Presenters
             };
 
             dlg.ShowDialog();
-
-            Files = (List<PathHolder>) new PathHolderMapper().MapList(dlg.FileNames);
+            return dlg.FileNames;
         }
 
         public void Play()

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using AudioWorker.Interfaces;
 using AudioWorker.Models;
 using NAudio.Wave;
 using PlaybackState = AudioWorker.Interfaces.PlaybackState;
 
 namespace AudioWorker.Providers
 {
-    internal class AudioProvider : Interfaces.IAudioProvider
+    internal class AudioProvider : IAudioProvider
     {
         private readonly WaveOutEvent _waveOutEvent;
         private AudioFileReader _fileReader;
 
+        private readonly Timer _timer = new Timer();
+
         public AudioData AudioData { get; private set; }
 
-        public Interfaces.PlaybackState PlaybackState
+        public PlaybackState PlaybackState
         {
             get
             {
@@ -34,6 +38,14 @@ namespace AudioWorker.Providers
         public AudioProvider()
         {
             _waveOutEvent = new WaveOutEvent();
+
+            _timer.Interval = 1000;
+            _timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            this.AudioData.Init(_fileReader);
         }
 
         public void InitAudio(string path)
@@ -44,13 +56,21 @@ namespace AudioWorker.Providers
             InitializeAudioData();
         }
 
-        
+        public AudioData GetAudioData(string fullPath)
+        {
+            var reader = new AudioFileReader(fullPath);
+            AudioData data = new AudioData();
+            data.Init(reader);
+
+            return data;
+        }
 
         private void InitializeAudioData()
         {
             AudioData = new AudioData();
             AudioData.Init(_fileReader);
         }
+            
 
         /// <summary>
         /// Value should be between 0.0 and 1.0
@@ -65,19 +85,28 @@ namespace AudioWorker.Providers
         public void Pause()
         {
             if (_fileReader != null)
+            {
                 _waveOutEvent.Pause();
+                _timer.Stop();
+            }
         }
 
         public void Play()
         {
             if (_fileReader != null)
+            {
                 _waveOutEvent.Play();
+                _timer.Start();
+            }
         }
 
         public void Stop()
         {
             if (_fileReader != null)
+            {
                 _waveOutEvent.Stop();
+                _timer.Stop();
+            }
         }
 
         public Task PlayAsync()
