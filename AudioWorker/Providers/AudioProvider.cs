@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AudioWorker.CustomEventArgs;
 using AudioWorker.Interfaces;
 using AudioWorker.Models;
 using NAudio.Wave;
@@ -15,7 +16,7 @@ namespace AudioWorker.Providers
 
         private readonly Timer _timer = new Timer();
 
-        public AudioData AudioData { get; private set; }
+        public AudioData AudioData { get; set; }
 
         public PlaybackState PlaybackState
         {
@@ -41,6 +42,14 @@ namespace AudioWorker.Providers
 
             _timer.Interval = 1000;
             _timer.Tick += Timer_Tick;
+        }
+
+        public void SubscribeOnPlaybackStopped(EventHandler<PlaybackStoppedEventArgs> method)
+        {
+            _waveOutEvent.PlaybackStopped += (sender, args) =>
+            {
+                method(sender, args as PlaybackStoppedEventArgs);
+            };
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -80,6 +89,12 @@ namespace AudioWorker.Providers
             if (value < 0 || value > 1)
                 return;
             _waveOutEvent.Volume = value;
+        }
+
+        public void ChangeAudioPosition(int seconds)
+        {
+            this._fileReader.CurrentTime = new TimeSpan(0, 0, seconds);
+            this.AudioData.Init(_fileReader);
         }
 
         public void Pause()

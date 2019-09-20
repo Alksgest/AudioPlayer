@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using AudioWorker.CustomEventArgs;
 using AudioWorker.Models;
 
 namespace AudioWorker.Interfaces
@@ -14,13 +14,14 @@ namespace AudioWorker.Interfaces
     public interface IAudioProvider : IPlayer, IAsyncPlayer
     {
         AudioData AudioData { get; }
+        AudioData GetAudioData(string fullPath);
+        PlaybackState PlaybackState { get; }
 
         void ChangeVolume(float value);
+        void ChangeAudioPosition(int seconds);
         void InitAudio(string path);
 
-        AudioData GetAudioData(string fullPath);
-
-        PlaybackState PlaybackState { get; }
+        void SubscribeOnPlaybackStopped(EventHandler<PlaybackStoppedEventArgs> method);
 
     }
 }

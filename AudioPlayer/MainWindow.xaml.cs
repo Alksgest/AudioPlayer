@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using AudioPlayer.CustomEventArgs;
 using AudioPlayer.Models;
 using AudioPlayer.Presenters;
 using AudioPlayer.Views;
-using AudioWorker.Factories;
-using AudioWorker.Interfaces;
 using AudioWorker.Models;
 
 namespace AudioPlayer
@@ -15,6 +15,7 @@ namespace AudioPlayer
 
         public event EventHandler Initialize;
         public event EventHandler LoadFiles;
+        public event EventHandler AudioStopped;
         public event EventHandler<PathHolderEventArgs> ChangeAudio;
         public event EventHandler<VolumeChangingEventArgs> VolumeChanging;
 
@@ -48,17 +49,8 @@ namespace AudioPlayer
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {
             LoadFiles?.Invoke(sender, e);
-            //this.FilesListView.ItemsSource = _presenter.Files;
             this.AudioDataGrid.ItemsSource = _presenter.AudioData;
         }
-
-        //private void FilesListView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    ChangeAudio?.Invoke(sender, new PathHolderEventArgs
-        //    {
-        //        PathHolder = FilesListView.SelectedItem as PathHolder
-        //    });
-        //}
 
         private void RangeBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -72,13 +64,16 @@ namespace AudioPlayer
         {
             var data = AudioDataGrid.SelectedItem as AudioData;
             ChangeAudioViaNewAudioData(sender, data);
-            SetTimeLabels();
+            SetDataContext();
         }
 
-        private void SetTimeLabels()
+        private void SetDataContext()
         {
             CurrentTimeLabel.DataContext = _presenter.CurrentData;
             FullTimeLabel.DataContext = _presenter.CurrentData;
+            DurationSlider.DataContext = _presenter.CurrentData;
+
+            AudioDataGrid.SelectedIndex = _presenter.IndexOfCurrentAudio();
         }
 
         private void ChangeAudioViaNewAudioData(object sender, AudioData data)
@@ -91,6 +86,29 @@ namespace AudioPlayer
                     Title = data.FileName
                 }
             });
+        }
+
+        private void DurationSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            _presenter.ChangeCurrentAudioPosition((e.Source as Slider).Value);
+        }
+
+        private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //if ((Int32)(e.Source as Slider).Value >= (Int32)_presenter.CurrentData.TotalTime.Value.TotalSeconds)
+            //    AudioStopped?.Invoke(sender, e);
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.PlayNextAudio(true);
+            SetDataContext();
+        }
+
+        private void PrevtButton_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.PlayNextAudio(false);
+            SetDataContext();
         }
     }
 }
