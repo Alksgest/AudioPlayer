@@ -22,6 +22,7 @@ namespace AudioPlayer.Presenters
 
         public List<PathHolder> Files { get; private set; } = new List<PathHolder>();
 
+        public bool IsAudioFinished => CurrentData.CurrentTime >= CurrentData.TotalTime;
 
         public AudioData CurrentData
         {

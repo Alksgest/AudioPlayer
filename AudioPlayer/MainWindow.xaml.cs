@@ -69,6 +69,8 @@ namespace AudioPlayer
 
         private void SetDataContext()
         {
+            //DurationSlider.Value = 0;
+
             CurrentTimeLabel.DataContext = _presenter.CurrentData;
             FullTimeLabel.DataContext = _presenter.CurrentData;
             DurationSlider.DataContext = _presenter.CurrentData;
@@ -95,8 +97,11 @@ namespace AudioPlayer
 
         private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //if ((Int32)(e.Source as Slider).Value >= (Int32)_presenter.CurrentData.TotalTime.Value.TotalSeconds)
-            //    AudioStopped?.Invoke(sender, e);
+            if (_presenter.IsAudioFinished)
+            {
+                _presenter.PlayNextAudio(true);
+                SetDataContext();
+            }
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)

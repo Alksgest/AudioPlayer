@@ -24,7 +24,7 @@
                     Margin="10,299,0,0" VerticalAlignment="Top" 
                     Width="203" 
                     Maximum="{Binding Path=TotalTime.TotalSeconds, Mode=OneWay}"
-                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay}"
+                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     Thumb.DragCompleted="DurationSlider_DragCompleted"
                     ValueChanged="DurationSlider_ValueChanged"/>
 
