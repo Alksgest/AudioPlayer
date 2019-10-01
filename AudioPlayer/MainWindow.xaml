@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="275">
     <Grid>
         <Grid HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="247">
-            <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Left" Margin="2,369,0,0" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
+            <Button x:Name="StartButton" Content="Play" HorizontalAlignment="Left" Margin="2,369,0,0" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
             <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Margin="162,369,0,0" VerticalAlignment="Top" Width="75" Click="StopButton_Click"/>
             <Button x:Name="PauseButton" Content="Pause" HorizontalAlignment="Left" Margin="82,369,0,0" VerticalAlignment="Top" Width="75" Click="PauseButton_Click"/>
             <Button x:Name="OpenFolderButton" Content="Open files" HorizontalAlignment="Left" Margin="10,344,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click"/>
@@ -48,7 +48,7 @@
                     <DataGridTextColumn Width="*" Header="Total time" Binding="{Binding Path=TotalTime}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button x:Name="PrevtButton" Content="Prev" HorizontalAlignment="Left" Margin="120,344,0,0" VerticalAlignment="Top" Width="44" Click="PrevtButton_Click" />
+            <Button x:Name="PrevtButton" Content="Prev" HorizontalAlignment="Left" Margin="120,344,0,0" VerticalAlignment="Top" Width="44" Click="PrevButton_Click" />
             <Button x:Name="NextButton" Content="Next" HorizontalAlignment="Left" Margin="169,344,0,0" VerticalAlignment="Top" Width="44" Click="NextButton_Click" />
         </Grid>
 

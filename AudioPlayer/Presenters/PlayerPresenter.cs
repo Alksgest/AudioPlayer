@@ -5,7 +5,6 @@ using AudioPlayer.CustomEventArgs;
 using AudioPlayer.Mappers;
 using AudioPlayer.Models;
 using AudioPlayer.Views;
-using AudioWorker.CustomEventArgs;
 using AudioWorker.Factories;
 using AudioWorker.Interfaces;
 using AudioWorker.Models;
@@ -57,12 +56,6 @@ namespace AudioPlayer.Presenters
             View.LoadFiles += OnLoadFiles;
             View.ChangeAudio += OnChangeAudio;
             View.VolumeChanging += OnVolumeChanging;
-            View.AudioStopped += View_AudioStopped;
-        }
-
-        private void View_AudioStopped(object sender, EventArgs e)
-        {
-            //PlayNextAudio();
         }
 
         public int IndexOfCurrentAudio()
@@ -70,28 +63,28 @@ namespace AudioPlayer.Presenters
             return this.AudioData.IndexOf(AudioData.Single(d => d.FilePath == CurrentData.FilePath));
         }
 
-        public void PlayNextAudio(bool direction)
+        public void PlayNextAudio()
         {
             int size = this.AudioData.Count;
             int position = IndexOfCurrentAudio();
+            var nextPosition = position + 1 == size ? 0 : position + 1;
 
-            if (direction)
-            {
-                var nextPosition = position + 1 == size ? 0 : position + 1;
-                ChangeAudio(Files[nextPosition]);
-            } else
-            {
-                var nextPosition = position - 1 == 0 ? size - 1 : position - 1;
-                ChangeAudio(Files[nextPosition]);
-            }
+            ChangeAudio(Files[nextPosition]);
         }
+
+    public void PlayPreviousAudio()
+    {
+        int size = this.AudioData.Count;
+        int position = IndexOfCurrentAudio();
+        var nextPosition = position - 1 == 0 ? size - 1 : position - 1;
+
+        ChangeAudio(Files[nextPosition]);
+    }
+    
 
         private void OnVolumeChanging(object sender, VolumeChangingEventArgs e) => _provider.ChangeVolume(e.Volume);
 
-        private void OnChangeAudio(object sender, PathHolderEventArgs e)
-        {
-            ChangeAudio(e.PathHolder);
-        }
+        private void OnChangeAudio(object sender, PathHolderEventArgs e) => ChangeAudio(e.PathHolder);
 
         private void ChangeAudio(PathHolder pathHolder)
         {
@@ -124,19 +117,10 @@ namespace AudioPlayer.Presenters
             return dlg.FileNames;
         }
 
-        public void Play()
-        {
-            _provider.Play();
-        }
+        public void Play() => _provider.Play();
 
-        public void Stop()
-        {
-            _provider.Stop();
-        }
+        public void Stop() => _provider.Stop();
 
-        public void Pause()
-        {
-            _provider.Pause();
-        }
+        public void Pause() => _provider.Pause();
     }
 }

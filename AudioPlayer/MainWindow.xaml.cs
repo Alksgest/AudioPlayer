@@ -15,7 +15,6 @@ namespace AudioPlayer
 
         public event EventHandler Initialize;
         public event EventHandler LoadFiles;
-        public event EventHandler AudioStopped;
         public event EventHandler<PathHolderEventArgs> ChangeAudio;
         public event EventHandler<VolumeChangingEventArgs> VolumeChanging;
 
@@ -69,8 +68,6 @@ namespace AudioPlayer
 
         private void SetDataContext()
         {
-            //DurationSlider.Value = 0;
-
             CurrentTimeLabel.DataContext = _presenter.CurrentData;
             FullTimeLabel.DataContext = _presenter.CurrentData;
             DurationSlider.DataContext = _presenter.CurrentData;
@@ -98,21 +95,22 @@ namespace AudioPlayer
         private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_presenter.IsAudioFinished)
-            {
-                _presenter.PlayNextAudio(true);
-                SetDataContext();
-            }
+                PlayNextAudio();
         }
 
-        private void NextButton_Click(object sender, RoutedEventArgs e)
+        private void NextButton_Click(object sender, RoutedEventArgs e) => PlayNextAudio();
+
+        private void PrevButton_Click(object sender, RoutedEventArgs e) => PlayPreviousAudio();
+
+        private void PlayPreviousAudio()
         {
-            _presenter.PlayNextAudio(true);
+            _presenter.PlayPreviousAudio();
             SetDataContext();
         }
 
-        private void PrevtButton_Click(object sender, RoutedEventArgs e)
+        private void PlayNextAudio()
         {
-            _presenter.PlayNextAudio(false);
+            _presenter.PlayNextAudio();
             SetDataContext();
         }
     }
