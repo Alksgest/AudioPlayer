@@ -45,25 +45,23 @@ namespace AudioPlayer.Controls
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             NextAudioInvoked?.Invoke(sender, e);
-            SetDataContext();
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             PlayEventInvoked?.Invoke(sender, e);
-            SetDataContext();
+            PlayButton.Content = FindResource("Stop");
+            PlayButton.Content = FindResource("Play");
         }
 
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
             PreviousAudioInvoked?.Invoke(sender, e);
-            SetDataContext();
         }
 
         private void DurationSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             _presenter.ChangeCurrentAudioPosition((Int32)(e.Source as Slider).Value);
-            SetDataContext();
         }
 
         private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<Double> e)
@@ -71,11 +69,10 @@ namespace AudioPlayer.Controls
             if (_presenter.IsAudioFinished)
             {
                 NextAudioInvoked.Invoke(sender, e);
-                SetDataContext();
             }
         }
 
-        private void SetDataContext()
+        public void SetDataContext()
         {
             CurrentTimeLabel.DataContext = _presenter.DataContext;
             FullTimeLabel.DataContext = _presenter.DataContext;

@@ -66,12 +66,12 @@
       <DependentUpon>ControlBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Managers\AudioManager.cs" />
-    <Compile Include="Managers\IPlayer.cs" />
-    <Compile Include="Managers\PlayerFactory.cs" />
+    <Compile Include="Managers\IAudioPlayer.cs" />
+    <Compile Include="Managers\AudioPlayerFactory.cs" />
     <Compile Include="Mappers\PathHolderMapper.cs" />
     <Compile Include="Models\PathHolder.cs" />
     <Compile Include="Presenters\ControlBarPresenter.cs" />
-    <Compile Include="Presenters\PlayerPresenter.cs" />
+    <Compile Include="Presenters\AudioPlayerPresenter.cs" />
     <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Views\IControlBarView.cs" />
     <Compile Include="Views\IView.cs" />

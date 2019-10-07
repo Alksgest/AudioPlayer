@@ -19,11 +19,14 @@ namespace AudioPlayer
         public event EventHandler<PathHolderEventArgs> ChangeAudio;
         public event EventHandler<VolumeChangingEventArgs> VolumeChanging;
 
-        private readonly PlayerPresenter _presenter;
+        private readonly AudioPlayerPresenter _presenter;
+
+        public DataGrid DataGrid => this.AudioDataGrid;
 
         public MainWindow()
         {
-            _presenter = new PlayerPresenter(this);
+            _presenter = new AudioPlayerPresenter(this);
+
             InitializeComponent();
 
             InvokeInitialization(new EventArgs());
@@ -64,10 +67,7 @@ namespace AudioPlayer
         {
             var data = AudioDataGrid.SelectedItem as AudioData;
             ChangeAudioViaNewAudioData(sender, data);
-            //SetDataContext();
         }
-
-
 
         private void ChangeAudioViaNewAudioData(object sender, AudioData data)
         {
@@ -81,6 +81,6 @@ namespace AudioPlayer
             });
         }
 
-        //AudioDataGrid.SelectedIndex = _presenter.IndexOfCurrentAudio();
+        //
     }
 }

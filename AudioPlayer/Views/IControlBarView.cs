@@ -11,5 +11,7 @@ namespace AudioPlayer.Views
         event EventHandler PlayEventInvoked;
         event EventHandler NextAudioInvoked;
         event EventHandler PreviousAudioInvoked;
+
+        void SetDataContext();
     }
 }

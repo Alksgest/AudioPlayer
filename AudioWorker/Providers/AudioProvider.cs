@@ -5,7 +5,7 @@ using AudioWorker.CustomEventArgs;
 using AudioWorker.Interfaces;
 using AudioWorker.Models;
 using NAudio.Wave;
-using PlaybackState = AudioWorker.Interfaces.PlaybackState;
+using PlaybackState = AudioWorker.Models.PlaybackState;
 
 namespace AudioWorker.Providers
 {

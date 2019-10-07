@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using AudioPlayer.CustomEventArgs;
 
 namespace AudioPlayer.Views
@@ -9,6 +10,6 @@ namespace AudioPlayer.Views
         event EventHandler<PathHolderEventArgs> ChangeAudio;
         event EventHandler<VolumeChangingEventArgs> VolumeChanging;
 
-
+        DataGrid DataGrid { get; }
     }
 }

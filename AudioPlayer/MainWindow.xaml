@@ -22,7 +22,9 @@
                       MouseDoubleClick="AudioDataGrid_MouseDoubleClick" ColumnWidth="*" 
                       HorizontalAlignment="Left" Height="155"
                       Margin="10,10,0,0" VerticalAlignment="Top" 
-                      Width="203" IsReadOnly="True">
+                      Width="203" IsReadOnly="True"
+                      >
+                <!--SelectedIndex="{Binding IndexOfCurrentAudio, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="Name" Binding="{Binding FileName}"/>
                     <DataGridTextColumn Width="*" Header="Total time" Binding="{Binding TotalTime}"/>

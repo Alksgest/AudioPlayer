@@ -10,19 +10,20 @@ using AudioPlayer.Managers;
 
 namespace AudioPlayer.Presenters
 {
-    public class PlayerPresenter : Presenter<IMainView>
+    public class AudioPlayerPresenter : Presenter<IMainView>
     {
         private const string FormatFilter =
             "Audio Files (*.mp3; *.wav; *.wma; *.flac; *.ogg; *.m4a) " +
             "|*.mp3;*.wav;*.wma;*.flac;*.ogg;*.m4a";
 
-        private readonly IPlayer _player = PlayerFactory.GetPlayer();
+        private readonly IAudioPlayer _player = AudioPlayerFactory.Player;
 
         public AudioData CurrentAudioData => _player.CurrentAudioData;
         public IList<AudioData> AudioData => _player.AudioData;
         public IList<PathHolder> Files => _player.Files;
+        public Int32? IndexOfCurrentAudio => _player.IndexOfCurrentAudio;
 
-        public PlayerPresenter(IMainView view) : base(view) { }
+        public AudioPlayerPresenter(IMainView view) : base(view) { }
 
         protected override void Initialize(object sender, EventArgs args)
         {
@@ -30,6 +31,20 @@ namespace AudioPlayer.Presenters
             View.LoadFiles += OnLoadFiles;
             View.ChangeAudio += OnChangeAudio;
             View.VolumeChanging += OnVolumeChanging;
+
+            _player.PropertyChanged += AudioPlayer_PropertyChanged;
+        }
+
+        private void AudioPlayer_PropertyChanged(Object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "CurrentAudioData":
+                    break;
+                case "IndexOfCurrentAudio":
+                    View.DataGrid.SelectedIndex = IndexOfCurrentAudio.Value;
+                    break;
+            }
         }
 
         private void SetAudioData()

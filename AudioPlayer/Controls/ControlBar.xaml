@@ -32,14 +32,14 @@
                     ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}"/>
         <!--Content="{Binding TotalTime}"-->
         
-        <Button Background="White" x:Name="PrevtButton" 
+        <Button Background="White" x:Name="PrevButton" 
                 Content="{StaticResource Previous}" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Width="30" 
                 Click="PrevButton_Click" Height="30" 
                 Margin="0,50,0,0" BorderThickness="0"/>
-        <Button Background="White" x:Name="StartButton" 
+        <Button Background="White" x:Name="PlayButton" 
                 Content="{StaticResource Play}" HorizontalAlignment="Left"  
-                VerticalAlignment="Top" Width="30" Click="StartButton_Click" 
+                VerticalAlignment="Top" Width="30" Click="PlayButton_Click" 
                 Margin="85,50,0,0" BorderThickness="0"/>
         <Button Background="White" x:Name="NextButton" 
                 Content="{StaticResource Next}"  HorizontalAlignment="Left" 

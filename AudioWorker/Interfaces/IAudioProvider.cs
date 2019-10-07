@@ -4,12 +4,6 @@ using AudioWorker.Models;
 
 namespace AudioWorker.Interfaces
 {
-    public enum PlaybackState
-    {
-        Playing,
-        Paused,
-        Stoped
-    }
 
     public interface IAudioProvider : IPlayable, IAsyncPlayable
     {
