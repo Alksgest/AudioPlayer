@@ -5,50 +5,24 @@ using AudioPlayer.CustomEventArgs;
 using AudioPlayer.Mappers;
 using AudioPlayer.Models;
 using AudioPlayer.Views;
-using AudioWorker.Factories;
-using AudioWorker.Interfaces;
 using AudioWorker.Models;
+using AudioPlayer.Managers;
 
 namespace AudioPlayer.Presenters
 {
-    public class PlayerPresenter : Presenter<IMainView>, IPlayer
+    public class PlayerPresenter : Presenter<IMainView>
     {
         private const string FormatFilter =
             "Audio Files (*.mp3; *.wav; *.wma; *.flac; *.ogg; *.m4a) " +
             "|*.mp3;*.wav;*.wma;*.flac;*.ogg;*.m4a";
 
-        private readonly IAudioProvider _provider = AudioProviderFactory.GetAudioPlayer();
+        private readonly IPlayer _player = PlayerFactory.GetPlayer();
 
-        public List<PathHolder> Files { get; private set; } = new List<PathHolder>();
+        public AudioData CurrentAudioData => _player.CurrentAudioData;
+        public IList<AudioData> AudioData => _player.AudioData;
+        public IList<PathHolder> Files => _player.Files;
 
-        public bool IsAudioFinished => CurrentData.CurrentTime >= CurrentData.TotalTime;
-
-        public AudioData CurrentData
-        {
-            get
-            {
-                return _provider.AudioData;
-            }
-        }
-
-        public List<AudioData> AudioData { get; private set; } = new List<AudioData>();
-
-        public PlayerPresenter(IMainView view) : base(view)
-        {
-        }
-
-        private void SetAudioData()
-        {
-            foreach(var file in Files)
-            {
-                AudioData.Add(_provider.GetAudioData(file.FullPath));
-            }
-        }
-
-        public void ChangeCurrentAudioPosition(double value)
-        {
-            _provider.ChangeAudioPosition((Int32)value);
-        }
+        public PlayerPresenter(IMainView view) : base(view) { }
 
         protected override void Initialize(object sender, EventArgs args)
         {
@@ -58,49 +32,23 @@ namespace AudioPlayer.Presenters
             View.VolumeChanging += OnVolumeChanging;
         }
 
-        public int IndexOfCurrentAudio()
+        private void SetAudioData()
         {
-            return this.AudioData.IndexOf(AudioData.Single(d => d.FilePath == CurrentData.FilePath));
+            foreach (var file in Files)
+            {
+                AudioData.Add(_player.GetAudioDataFromFile(file.FullPath));
+            }
         }
 
-        public void PlayNextAudio()
-        {
-            int size = this.AudioData.Count;
-            int position = IndexOfCurrentAudio();
-            var nextPosition = position + 1 == size ? 0 : position + 1;
+        private void OnVolumeChanging(object sender, VolumeChangingEventArgs e) => _player.ChangeVolume(e.Volume);
 
-            ChangeAudio(Files[nextPosition]);
-        }
-
-    public void PlayPreviousAudio()
-    {
-        int size = this.AudioData.Count;
-        int position = IndexOfCurrentAudio();
-        var nextPosition = position - 1 == 0 ? size - 1 : position - 1;
-
-        ChangeAudio(Files[nextPosition]);
-    }
-    
-
-        private void OnVolumeChanging(object sender, VolumeChangingEventArgs e) => _provider.ChangeVolume(e.Volume);
-
-        private void OnChangeAudio(object sender, PathHolderEventArgs e) => ChangeAudio(e.PathHolder);
-
-        private void ChangeAudio(PathHolder pathHolder)
-        {
-            if (_provider.PlaybackState != PlaybackState.Stoped)
-                Stop();
-
-            _provider.InitAudio(pathHolder.FullPath);
-
-            Play();
-        }
+        private void OnChangeAudio(object sender, PathHolderEventArgs e) => _player.ChangeAudio(e.PathHolder.FullPath);
 
         private void OnLoadFiles(object sender, EventArgs args)
         {
             var files = OpenFilesDialog();
 
-            Files = (List<PathHolder>)new PathHolderMapper().MapList(files);
+            _player.Files = (List<PathHolder>)new PathHolderMapper().MapList(files);
             SetAudioData();
         }
 
@@ -117,10 +65,10 @@ namespace AudioPlayer.Presenters
             return dlg.FileNames;
         }
 
-        public void Play() => _provider.Play();
+        public void Play() => _player.Play();
 
-        public void Stop() => _provider.Stop();
+        public void Stop() => _player.Stop();
 
-        public void Pause() => _provider.Pause();
+        public void Pause() => _player.Pause();
     }
 }

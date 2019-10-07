@@ -65,7 +65,7 @@ namespace AudioWorker.Providers
             InitializeAudioData();
         }
 
-        public AudioData GetAudioData(string fullPath)
+        public AudioData GetAudioDataFromFile(string fullPath)
         {
             var reader = new AudioFileReader(fullPath);
             AudioData data = new AudioData();

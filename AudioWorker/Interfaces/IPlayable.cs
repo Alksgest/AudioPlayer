@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AudioWorker.Interfaces
 {
-    public interface IAsyncPlayer
+    public interface IPlayable
     {
-        Task PlayAsync();
-        Task StopAsync();
-        Task PauseAsync();
+        void Play();
+        void Stop();
+        void Pause();
     }
 }

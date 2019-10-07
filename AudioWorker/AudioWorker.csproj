@@ -48,8 +48,8 @@
     <Compile Include="CustomEventArgs\PlaybackStoppedEventArgs.cs" />
     <Compile Include="Exceptions\AudioFileReaderNotInitializedException.cs" />
     <Compile Include="Factories\AudioProviderFactory.cs" />
-    <Compile Include="Interfaces\IAsyncPlayer.cs" />
-    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Interfaces\IAsyncPlayable.cs" />
+    <Compile Include="Interfaces\IPlayable.cs" />
     <Compile Include="Models\AudioData.cs" />
     <Compile Include="Providers\AudioProvider.cs" />
     <Compile Include="Interfaces\IAudioProvider.cs" />

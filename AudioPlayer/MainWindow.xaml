@@ -1,17 +1,15 @@
-﻿<Window x:Class="AudioPlayer.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AudioPlayer"
+        xmlns:Controls="clr-namespace:AudioPlayer.Controls" x:Class="AudioPlayer.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="275">
+        Title="MainWindow" Height="450" Width="280">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="247">
-            <Button x:Name="StartButton" Content="Play" HorizontalAlignment="Left" Margin="2,369,0,0" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
-            <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Margin="162,369,0,0" VerticalAlignment="Top" Width="75" Click="StopButton_Click"/>
-            <Button x:Name="PauseButton" Content="Pause" HorizontalAlignment="Left" Margin="82,369,0,0" VerticalAlignment="Top" Width="75" Click="PauseButton_Click"/>
-            <Button x:Name="OpenFolderButton" Content="Open files" HorizontalAlignment="Left" Margin="10,344,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click"/>
+        <Grid HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="252">
+            <Button x:Name="OpenFolderButton" Content="Open files" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="75" Click="OpenFolderButton_Click" RenderTransformOrigin="0.253,-5.15"/>
 
             <Slider x:Name="VolumeSlider" HorizontalAlignment="Left" Margin="218,10,0,0" 
                     VerticalAlignment="Top" Width="19" 
@@ -20,36 +18,18 @@
                     TickPlacement="BottomRight" Height="354"
                     ValueChanged="RangeBase_OnValueChanged"/>
 
-            <Slider x:Name="DurationSlider" HorizontalAlignment="Left" 
-                    Margin="10,299,0,0" VerticalAlignment="Top" 
-                    Width="203" 
-                    Maximum="{Binding Path=TotalTime.TotalSeconds, Mode=OneWay}"
-                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Thumb.DragCompleted="DurationSlider_DragCompleted"
-                    ValueChanged="DurationSlider_ValueChanged"/>
-
-            <Label x:Name="CurrentTimeLabel" VerticalAlignment="Top" 
-                   HorizontalAlignment="Left" Margin="10,318,0,0"
-                   Content="{Binding Path=CurrentTime}" ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}" >
-            </Label>
-
-            <Label x:Name="FullTimeLabel" VerticalAlignment="Top"
-                   HorizontalAlignment="Left" Margin="162,318,0,0"
-                   Content="{Binding Path=TotalTime}" ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}">
-            </Label>
-
             <DataGrid x:Name="AudioDataGrid" AutoGenerateColumns="False"
                       MouseDoubleClick="AudioDataGrid_MouseDoubleClick" ColumnWidth="*" 
-                      HorizontalAlignment="Left" Height="284"
+                      HorizontalAlignment="Left" Height="155"
                       Margin="10,10,0,0" VerticalAlignment="Top" 
                       Width="203" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Path=FileName}"/>
-                    <DataGridTextColumn Width="*" Header="Total time" Binding="{Binding Path=TotalTime}"/>
+                    <DataGridTextColumn Width="*" Header="Name" Binding="{Binding FileName}"/>
+                    <DataGridTextColumn Width="*" Header="Total time" Binding="{Binding TotalTime}"/>
+                    <!--HeaderStringFormat="{}{0:hh}:{0:mm}:{0:ss}"-->
                 </DataGrid.Columns>
             </DataGrid>
-            <Button x:Name="PrevtButton" Content="Prev" HorizontalAlignment="Left" Margin="120,344,0,0" VerticalAlignment="Top" Width="44" Click="PrevButton_Click" />
-            <Button x:Name="NextButton" Content="Next" HorizontalAlignment="Left" Margin="169,344,0,0" VerticalAlignment="Top" Width="44" Click="NextButton_Click" />
+            <Controls:ControlBar HorizontalAlignment="Left" Height="88" Margin="13,292,0,0" VerticalAlignment="Top" Width="200"/>
         </Grid>
 
     </Grid>

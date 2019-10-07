@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using AudioPlayer.CustomEventArgs;
 using AudioPlayer.Models;
@@ -63,17 +64,10 @@ namespace AudioPlayer
         {
             var data = AudioDataGrid.SelectedItem as AudioData;
             ChangeAudioViaNewAudioData(sender, data);
-            SetDataContext();
+            //SetDataContext();
         }
 
-        private void SetDataContext()
-        {
-            CurrentTimeLabel.DataContext = _presenter.CurrentData;
-            FullTimeLabel.DataContext = _presenter.CurrentData;
-            DurationSlider.DataContext = _presenter.CurrentData;
 
-            AudioDataGrid.SelectedIndex = _presenter.IndexOfCurrentAudio();
-        }
 
         private void ChangeAudioViaNewAudioData(object sender, AudioData data)
         {
@@ -87,31 +81,6 @@ namespace AudioPlayer
             });
         }
 
-        private void DurationSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            _presenter.ChangeCurrentAudioPosition((e.Source as Slider).Value);
-        }
-
-        private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (_presenter.IsAudioFinished)
-                PlayNextAudio();
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e) => PlayNextAudio();
-
-        private void PrevButton_Click(object sender, RoutedEventArgs e) => PlayPreviousAudio();
-
-        private void PlayPreviousAudio()
-        {
-            _presenter.PlayPreviousAudio();
-            SetDataContext();
-        }
-
-        private void PlayNextAudio()
-        {
-            _presenter.PlayNextAudio();
-            SetDataContext();
-        }
+        //AudioDataGrid.SelectedIndex = _presenter.IndexOfCurrentAudio();
     }
 }

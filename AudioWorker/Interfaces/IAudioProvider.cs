@@ -11,10 +11,10 @@ namespace AudioWorker.Interfaces
         Stoped
     }
 
-    public interface IAudioProvider : IPlayer, IAsyncPlayer
+    public interface IAudioProvider : IPlayable, IAsyncPlayable
     {
         AudioData AudioData { get; }
-        AudioData GetAudioData(string fullPath);
+        AudioData GetAudioDataFromFile(string fullPath);
         PlaybackState PlaybackState { get; }
 
         void ChangeVolume(float value);

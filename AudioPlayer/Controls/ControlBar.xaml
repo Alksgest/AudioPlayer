@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="AudioPlayer.Controls.ControlBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AudioPlayer.Controls"
+             mc:Ignorable="d" 
+             d:DesignWidth="200" Height="88">
+    <UserControl.Resources>
+        <Image x:Key="Play" Source="/Icons/play-button.png"/>
+        <Image x:Key="Stop" Source="/Icons/stop.png"/>
+        <Image x:Key="Next" Source="/Icons/next-1.png"/>
+        <Image x:Key="Previous" Source="/Icons/back-1.png"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Slider x:Name="DurationSlider" HorizontalAlignment="Left" 
+                    Margin="0,0,0,0" VerticalAlignment="Top" 
+                    Width="200" 
+                    Maximum="{Binding TotalTime.TotalSeconds, Mode=OneWay}"
+                    Value="{Binding CurrentTime.TotalSeconds, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Thumb.DragCompleted="DurationSlider_DragCompleted"
+                    ValueChanged="DurationSlider_ValueChanged"/>
+
+        <Label Content="{Binding CurrentTime}" x:Name="CurrentTimeLabel" VerticalAlignment="Top" 
+                   HorizontalAlignment="Left" Margin="0,18,0,0"
+                    ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}" />
+        <!--Content="{Binding CurrentTime}"-->
+
+        <Label Content="{Binding TotalTime}" x:Name="FullTimeLabel" VerticalAlignment="Top"
+                   HorizontalAlignment="Right" Margin="130,18,0,0"
+                    ContentStringFormat="{}{0:hh}:{0:mm}:{0:ss}"/>
+        <!--Content="{Binding TotalTime}"-->
+        
+        <Button Background="White" x:Name="PrevtButton" 
+                Content="{StaticResource Previous}" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Width="30" 
+                Click="PrevButton_Click" Height="30" 
+                Margin="0,50,0,0" BorderThickness="0"/>
+        <Button Background="White" x:Name="StartButton" 
+                Content="{StaticResource Play}" HorizontalAlignment="Left"  
+                VerticalAlignment="Top" Width="30" Click="StartButton_Click" 
+                Margin="85,50,0,0" BorderThickness="0"/>
+        <Button Background="White" x:Name="NextButton" 
+                Content="{StaticResource Next}"  HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Width="30" Click="NextButton_Click" 
+                Margin="170,49,0,0" BorderThickness="0"/>
+    </Grid>
+</UserControl>
